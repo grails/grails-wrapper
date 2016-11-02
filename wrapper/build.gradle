@@ -1,7 +1,41 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:3.2.0"
+    }
+}
+
 group 'org.grails'
 version '1.0.0.BUILD-SNAPSHOT'
 
 apply plugin: 'groovy'
+apply plugin: "org.grails.grails-plugin"
+apply plugin: "org.grails.grails-plugin-publish"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+
+grailsPublish {
+    userOrg = 'grails'
+    githubSlug = 'grails/grails-wrapper'
+    license {
+        name = 'Apache-2.0'
+    }
+    title = "Grails Wrapper"
+    desc = "Prevents having to download Grails installations for existing projects"
+    developers = [jameskleeh:"James Kleeh"]
+}
+
+bintray {
+    pkg {
+        desc = "Grails Wrapper"
+        name = 'grails-wrapper'
+    }
+}
 
 repositories {
     mavenCentral()
