@@ -1,0 +1,4 @@
+include 'starter'
+include 'wrapper'
+
+project(":wrapper").name = "grails-wrapper"
