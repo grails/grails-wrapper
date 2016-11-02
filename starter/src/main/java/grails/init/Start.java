@@ -15,24 +15,25 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class Start {
 
-    private static String baseUrl = "http://repo.grails.org/grails/core/org/grails/grails-datastore-web";
+    private static final String PROJECT_NAME = "grails-wrapper";
+    private static final String BASE_URL = "http://repo.grails.org/grails/core/org/grails/" + PROJECT_NAME;
 
     public static void main(String[] args) {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             FindReleaseHandler findReleaseHandler = new FindReleaseHandler();
-            saxParser.parse(new URL(baseUrl + "/maven-metadata.xml").openStream(), findReleaseHandler);
+            saxParser.parse(new URL(BASE_URL + "/maven-metadata.xml").openStream(), findReleaseHandler);
 
-            final String jarFileName = "grails-datastore-web-" + findReleaseHandler.version + ".jar";
+            final String jarFileName = PROJECT_NAME + "-" + findReleaseHandler.getVersion() + ".jar";
             File wrapperDir = new File(System.getProperty("user.home") + "/.grails/wrapper");
             wrapperDir.mkdirs();
 
             File existingWrapper = new File(wrapperDir, jarFileName);
-            File noVersionJar = new File(wrapperDir, "grails-datastore-web.jar");
+            File noVersionJar = new File(wrapperDir, PROJECT_NAME + ".jar");
 
             if (!existingWrapper.exists()) {
-                URL website = new URL(baseUrl + "/" + findReleaseHandler.version + "/" + jarFileName);
+                URL website = new URL(BASE_URL + "/" + findReleaseHandler.getVersion() + "/" + jarFileName);
                 ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                 FileOutputStream fos = new FileOutputStream(existingWrapper);
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
