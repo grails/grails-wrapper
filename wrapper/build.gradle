@@ -11,33 +11,29 @@ buildscript {
     }
 }
 
-ext {
-    userOrg = "grails"
+plugins {
+    id "io.spring.dependency-management" version "0.5.2.RELEASE"
+    id "com.jfrog.bintray" version "1.2"
 }
 
 group 'org.grails'
 version '1.0.0.BUILD-SNAPSHOT'
 
-apply plugin: 'groovy'
-apply plugin: "org.grails.grails-plugin-publish"
+apply plugin:'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'provided-base'
 
-grailsPublish {
+ext {
+    grailsVersion = project.grailsVersion
     userOrg = 'grails'
-    githubSlug = 'grails/grails-wrapper'
-    license {
-        name = 'Apache-2.0'
-    }
-    title = "Grails Wrapper"
-    desc = "Prevents having to download Grails installations for existing projects"
-    developers = [jameskleeh:"James Kleeh"]
+    repo = 'grails-core'
 }
 
-bintray {
-    pkg {
-        desc = "Grails Wrapper"
-        name = 'grails-wrapper'
-    }
-}
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 
 repositories {
     mavenLocal()
@@ -61,3 +57,19 @@ jar {
         attributes 'Main-Class': 'grails.init.RunCommand'
     }
 }
+
+task sourcesJar(type:Jar) {
+    classifier = 'sources'
+    from project.sourceSets.main.allSource
+}
+
+task javadocJar(type:Jar) {
+    classifier = 'javadoc'
+    from groovydoc.outputs
+}
+
+// Used for publishing to central repository, remove if not needed
+apply from:'../publishing/grailsCentralPublishing.gradle'
+apply from:'https://raw.githubusercontent.com/grails/grails-profile-repository/master/profiles/plugin/templates/bintrayPublishing.gradle'
+
+

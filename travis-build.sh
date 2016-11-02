@@ -15,3 +15,5 @@ if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST
       ./gradlew publish || EXIT_STATUS=$?
   fi
 fi
+
+exit $EXIT_STATUS
