@@ -6,3 +6,6 @@ jar {
         attributes 'Main-Class': 'grails.init.Start'
     }
 }
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
