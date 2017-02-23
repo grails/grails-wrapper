@@ -1,5 +1,6 @@
 package grails.init;
 
+import grails.proxy.SystemPropertiesAuthenticator;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -10,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.Authenticator;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.channels.Channels;
@@ -75,6 +77,8 @@ public class Start {
     }
 
     public static void main(String[] args) {
+        Authenticator.setDefault(new SystemPropertiesAuthenticator());
+
         try {
             String version = getVersion();
 
