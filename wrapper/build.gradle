@@ -19,7 +19,7 @@ plugins {
 group 'org.grails'
 version '1.0.1.BUILD-SNAPSHOT'
 
-apply plugin:'groovy'
+apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -42,9 +42,9 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy:2.4.7'
-    compile "org.springframework.boot:spring-boot-cli:1.4.0.RELEASE"
-    compile 'org.codehaus.groovy:groovy-ant:2.4.7'
+    compile 'org.codehaus.groovy:groovy:2.5.4'
+    compile "org.springframework.boot:spring-boot-cli:2.1.1.RELEASE"
+    compile 'org.codehaus.groovy:groovy-ant:2.5.4'
 }
 
 jar {
@@ -70,6 +70,6 @@ task javadocJar(type:Jar) {
 
 // Used for publishing to central repository, remove if not needed
 apply from:'../publishing/grailsCentralPublishing.gradle'
-apply from:'https://raw.githubusercontent.com/grails/grails-profile-repository/master/profiles/plugin/templates/bintrayPublishing.gradle'
+apply from:'../publishing/bintrayPublishing.gradle'
 
 

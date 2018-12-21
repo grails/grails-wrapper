@@ -11,7 +11,6 @@ import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration
 class RunCommand {
 
     static void main(String[] args) {
-        ClassLoader previousClassLoader = Thread.currentThread().contextClassLoader
 
         Properties props = new Properties()
         String grailsVersion
@@ -22,13 +21,14 @@ class RunCommand {
             throw new RuntimeException("Could not determine grails version due to missing properties file")
         }
 
-        GroovyClassLoader groovyClassLoader = new GroovyClassLoader(previousClassLoader)
+        GroovyClassLoader groovyClassLoader = new GroovyClassLoader(RunCommand.classLoader)
 
-        List<RepositoryConfiguration> repositoryConfigurations = [new RepositoryConfiguration("grailsCentral", new URI("https://repo.grails.org/grails/core"), false)]
+        List<RepositoryConfiguration> repositoryConfigurations = [new RepositoryConfiguration("grailsCentral", new URI("https://repo.grails.org/grails/core"), true)]
 
-        AetherGrapeEngine grapeEngine = AetherGrapeEngineFactory.create(groovyClassLoader, repositoryConfigurations, new DependencyResolutionContext())
+        AetherGrapeEngine grapeEngine = AetherGrapeEngineFactory.create(groovyClassLoader, repositoryConfigurations, new DependencyResolutionContext(), false)
         grapeEngine.grab([:], [group: "org.grails", module: "grails-shell", version: grailsVersion])
 
+        ClassLoader previousClassLoader = Thread.currentThread().contextClassLoader
         Thread.currentThread().setContextClassLoader(groovyClassLoader)
 
         try {
