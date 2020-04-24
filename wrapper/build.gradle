@@ -35,8 +35,8 @@ configurations {
     groovyDoc.extendsFrom runtime
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 
 repositories {
@@ -46,9 +46,9 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy:2.5.4'
-    compile "org.springframework.boot:spring-boot-cli:2.1.1.RELEASE"
-    compile 'org.codehaus.groovy:groovy-ant:2.5.4'
+    compile "org.codehaus.groovy:groovy:$groovyVersion"
+    compile "org.springframework.boot:spring-boot-cli:$springBootVersion"
+    compile "org.codehaus.groovy:groovy-ant:$groovyVersion"
 }
 
 jar {
