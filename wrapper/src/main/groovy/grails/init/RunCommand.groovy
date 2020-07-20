@@ -14,9 +14,11 @@ class RunCommand {
 
         Properties props = new Properties()
         String grailsVersion
+        String groovyVersion
         try {
             props.load(new FileInputStream("gradle.properties"))
             grailsVersion = props.getProperty("grailsVersion")
+            groovyVersion = props.getProperty("groovyVersion")
         } catch (IOException e) {
             throw new RuntimeException("Could not determine grails version due to missing properties file")
         }
@@ -24,6 +26,9 @@ class RunCommand {
         GroovyClassLoader groovyClassLoader = new GroovyClassLoader(RunCommand.classLoader)
 
         List<RepositoryConfiguration> repositoryConfigurations = [new RepositoryConfiguration("grailsCentral", new URI("https://repo.grails.org/grails/core"), true)]
+        if (groovyVersion.endsWith("SNAPSHOT")) {
+            repositoryConfigurations.add(new RepositoryConfiguration("JFrog OSS snapshot repo", new URI("https://oss.jfrog.org/oss-snapshot-local"), true))
+        }
 
         AetherGrapeEngine grapeEngine = AetherGrapeEngineFactory.create(groovyClassLoader, repositoryConfigurations, new DependencyResolutionContext(), false)
         grapeEngine.grab([:], [group: "org.grails", module: "grails-shell", version: grailsVersion])
