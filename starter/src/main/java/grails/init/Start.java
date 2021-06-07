@@ -19,7 +19,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class Start {
 
     private static final String PROJECT_NAME = "grails4_1-wrapper";
-    private static final String BASE_URL = "http://repo.grails.org/grails/core/org/grails/" + PROJECT_NAME;
+    private static final String DEFAULT_BASE_URL = "https://repo.grails.org/artifactory/core/org/grails/" + PROJECT_NAME;
     private static final File WRAPPER_DIR = new File(System.getProperty("user.home") + "/.grails/wrapper");
     private static final File NO_VERSION_JAR = new File(WRAPPER_DIR, PROJECT_NAME + ".jar");
 
@@ -28,7 +28,8 @@ public class Start {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             FindReleaseHandler findReleaseHandler = new FindReleaseHandler();
-            saxParser.parse(new URL(BASE_URL + "/maven-metadata.xml").openStream(), findReleaseHandler);
+            String baseUrl = System.getProperty("grails.wrapper.baseUrl", DEFAULT_BASE_URL);
+            saxParser.parse(new URL(baseUrl + "/maven-metadata.xml").openStream(), findReleaseHandler);
 
             return findReleaseHandler.getVersion();
         } catch (Exception e) {
@@ -54,7 +55,7 @@ public class Start {
         try {
             File dowloadedJar = File.createTempFile(jarFileName, jarFileExtension);
 
-            URL website = new URL(BASE_URL + "/" + version + "/" + jarFileName + jarFileExtension);
+            URL website = new URL(DEFAULT_BASE_URL + "/" + version + "/" + jarFileName + jarFileExtension);
             ReadableByteChannel rbc = Channels.newChannel(website.openStream());
             FileOutputStream fos = new FileOutputStream(dowloadedJar);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
