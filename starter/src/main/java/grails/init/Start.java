@@ -28,14 +28,15 @@ public class Start {
     private static final File NO_VERSION_JAR = new File(WRAPPER_DIR, PROJECT_NAME + ".jar");
 
     private static String getGrailsCoreArtifactoryBaseUrl() {
-        String artifactoryBaseUrl = DEFAULT_GRAILS_CORE_ARTIFACTORY_BASE_URL;
-        if (System.getenv("GRAILS_CORE_ARTIFACTORY_BASE_URL") != null) {
-            artifactoryBaseUrl = System.getenv("GRAILS_CORE_ARTIFACTORY_BASE_URL");
+        String baseUrl = System.getProperty("grails.core.artifactory.baseUrl");
+        if (baseUrl != null) {
+            return baseUrl;
         }
-        if (System.getProperty("grails.core.artifactory.baseUrl") != null) {
-            artifactoryBaseUrl = System.getProperty("grails.core.artifactory.baseUrl");
+        baseUrl = System.getenv("GRAILS_CORE_ARTIFACTORY_BASE_URL");
+        if (baseUrl != null) {
+            return baseUrl;
         }
-        return artifactoryBaseUrl;
+        return DEFAULT_GRAILS_CORE_ARTIFACTORY_BASE_URL;
     }
 
     private static String getVersion() {
@@ -45,17 +46,7 @@ public class Start {
             FindReleaseHandler findReleaseHandler = new FindReleaseHandler();
             final String mavenMetadataFileUrl = getGrailsCoreArtifactoryBaseUrl() + WRAPPER_PATH + "/maven-metadata.xml";
             HttpURLConnection conn = createHttpURLConnection(mavenMetadataFileUrl);
-            int status = conn.getResponseCode();
-            if (status == HttpURLConnection.HTTP_OK) {
-                saxParser.parse(conn.getInputStream(), findReleaseHandler);
-            } else if (isRedirect(status)) {
-                final String newUrl = conn.getHeaderField("Location");
-                conn = (HttpURLConnection) new URL(newUrl).openConnection();
-                saxParser.parse(conn.getInputStream(), findReleaseHandler);
-            } else {
-                System.out.println("Error downloading " + mavenMetadataFileUrl + " (HTTP Status: " + status + ")");
-                System.exit(1);
-            }
+            saxParser.parse(conn.getInputStream(), findReleaseHandler);
             return findReleaseHandler.getVersion();
         } catch (Exception e) {
             if (!NO_VERSION_JAR.exists()) {
@@ -65,14 +56,6 @@ public class Start {
             }
             return null;
         }
-    }
-
-    private static boolean isRedirect(int status) {
-        return status == HttpURLConnection.HTTP_MOVED_TEMP
-                || status == HttpURLConnection.HTTP_MOVED_PERM
-                || status == HttpURLConnection.HTTP_SEE_OTHER
-                || status == 308
-                || status == 307;
     }
 
     private static HttpURLConnection createHttpURLConnection(String mavenMetadataFileUrl) throws IOException {
@@ -97,18 +80,7 @@ public class Start {
 
             final String wrapperUrl = getGrailsCoreArtifactoryBaseUrl() + WRAPPER_PATH + "/" + version + "/" + jarFileName + jarFileExtension;
             HttpURLConnection conn = createHttpURLConnection(wrapperUrl);
-
-            int status = conn.getResponseCode();
-            if (status == HttpURLConnection.HTTP_OK) {
-                success = downloadWrapperJar(downloadedJar, conn.getInputStream());
-            } else if (isRedirect(status)) {
-                final String newUrl = conn.getHeaderField("Location");
-                conn = (HttpURLConnection) new URL(newUrl).openConnection();
-                success = downloadWrapperJar(downloadedJar, conn.getInputStream());
-            } else {
-                System.out.println("Error downloading " + wrapperUrl + " (HTTP Status: " + status + ")");
-                System.exit(1);
-            }
+            success = downloadWrapperJar(downloadedJar, conn.getInputStream());
         } catch (Exception e) {
             System.out.println("There was an error downloading the wrapper jar");
             e.printStackTrace();
