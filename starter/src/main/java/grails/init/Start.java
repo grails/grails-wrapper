@@ -22,8 +22,6 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class Start {
 
     private static final String PROJECT_NAME = "grails5-wrapper";
-    private static final String BASE_URL = "http://repo.grails.org/grails/core/org/grails/" + PROJECT_NAME;
-    private static final String PROJECT_NAME = "grails4-wrapper";
     private static final String WRAPPER_PATH = "/org/grails/" + PROJECT_NAME;
     private static final String DEFAULT_GRAILS_CORE_ARTIFACTORY_BASE_URL = "https://repo.grails.org/grails/core";
     private static final File WRAPPER_DIR = new File(System.getProperty("user.home") + "/.grails/wrapper");
@@ -75,18 +73,19 @@ public class Start {
         final String jarFileName = PROJECT_NAME + "-" + version;
         final String jarFileExtension = ".jar";
 
-        WRAPPER_DIR.mkdirs();
+        if (WRAPPER_DIR.mkdirs()) {
+            try {
+                File downloadedJar = File.createTempFile(jarFileName, jarFileExtension);
 
-        try {
-            File downloadedJar = File.createTempFile(jarFileName, jarFileExtension);
-
-            final String wrapperUrl = getGrailsCoreArtifactoryBaseUrl() + WRAPPER_PATH + "/" + version + "/" + jarFileName + jarFileExtension;
-            HttpURLConnection conn = createHttpURLConnection(wrapperUrl);
-            success = downloadWrapperJar(downloadedJar, conn.getInputStream());
-        } catch (Exception e) {
-            System.out.println("There was an error downloading the wrapper jar");
-            e.printStackTrace();
+                final String wrapperUrl = getGrailsCoreArtifactoryBaseUrl() + WRAPPER_PATH + "/" + version + "/" + jarFileName + jarFileExtension;
+                HttpURLConnection conn = createHttpURLConnection(wrapperUrl);
+                success = downloadWrapperJar(downloadedJar, conn.getInputStream());
+            } catch (Exception e) {
+                System.out.println("There was an error downloading the wrapper jar");
+                e.printStackTrace();
+            }
         }
+
 
         return success;
     }
@@ -108,7 +107,7 @@ public class Start {
                 updateJar(getVersion());
             }
             URLClassLoader child = new URLClassLoader(new URL[]{NO_VERSION_JAR.toURI().toURL()});
-            Class classToLoad = Class.forName("grails.init.RunCommand", true, child);
+            Class<?> classToLoad = Class.forName("grails.init.RunCommand", true, child);
             Method main = classToLoad.getMethod("main", String[].class);
             main.invoke(null, (Object) args);
 
