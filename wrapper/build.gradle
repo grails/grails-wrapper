@@ -24,12 +24,6 @@ buildscript {
 group 'org.grails'
 version project.projectVersion
 
-ext.isSnapshot = version.endsWith("-SNAPSHOT")
-ext.isReleaseVersion = !ext.isSnapshot
-ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
-ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
-ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
-
 ext.pomInfo = {
     delegate.name 'Grails 5 Wrapper'
     delegate.description 'The Grails Wrapper Project'
@@ -68,14 +62,9 @@ ext.pomInfo = {
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'provided-base'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: "io.spring.dependency-management"
-
-if (isReleaseVersion) {
-    apply plugin: "io.github.gradle-nexus.publish-plugin"
-}
 
 ext {
     grailsVersion = project.grailsVersion
@@ -142,21 +131,6 @@ afterEvaluate {
 
 tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
     shouldRunAfter(tasks.withType(Sign))
-}
-
-if (isReleaseVersion) {
-    nexusPublishing {
-        repositories {
-            sonatype {
-                def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
-                def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
-                def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
-                username = ossUser
-                password = ossPass
-                stagingProfileId = ossStagingProfileId
-            }
-        }
-    }
 }
 
 apply from:'../publishing/grailsCentralPublishing.gradle'
