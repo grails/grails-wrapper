@@ -2,9 +2,10 @@ publishing {
     publications {
         maven(MavenPublication) {
             pom.withXml {
-                def pomNode = asNode()
+                def xml = asNode()
+                xml.children().last() + pomInfo
                 try {
-                    pomNode.dependencyManagement.replaceNode {}
+                    xml.dependencyManagement.replaceNode {}
                 } catch (Throwable e) {
                     // ignore
                 }
@@ -12,7 +13,7 @@ publishing {
                 // simply remove dependencies without a version
                 // version-less dependencies are handled with dependencyManagement
                 // see https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/8 for more complete solutions
-                pomNode.dependencies.dependency.findAll {
+                xml.dependencies.dependency.findAll {
                     it.version.text().isEmpty()
                 }.each {
                     try {
@@ -30,21 +31,15 @@ publishing {
     }
 
     repositories {
-        maven {
-            credentials {
-                username System.getenv('GRAILS_CENTRAL_USERNAME') ?: project.properties.get('grailsPluginsUsername')
-                password System.getenv("GRAILS_CENTRAL_PASSWORD") ?: project.properties.get('grailsPluginsPassword')
-            }
-
-            if(group == 'org.grails.plugins') {
-                if(version.endsWith('-SNAPSHOT')) {
-                    url "https://repo.grails.org/grails/plugins3-snapshots-local"
+        if (isSnapshot) {
+            maven {
+                credentials {
+                    def u = System.getenv("ARTIFACTORY_USERNAME") ?: project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : ''
+                    def p = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : ''
+                    username = u
+                    password = p
                 }
-            }
-            else {
-                if(version.endsWith('-SNAPSHOT')) {
-                    url "https://repo.grails.org/grails/libs-snapshots-local"
-                }
+                url "https://repo.grails.org/grails/libs-snapshots-local"
             }
         }
     }

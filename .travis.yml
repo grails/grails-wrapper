@@ -1,4 +1,7 @@
 sudo: false
+branches:
+  only:
+    - 1.0.x
 cache:
   directories:
   - $HOME/.gradle
