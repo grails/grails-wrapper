@@ -22,7 +22,7 @@ buildscript {
 }
 
 group 'org.grails'
-version '3.0.0.BUILD-SNAPSHOT'
+version project.projectVersion
 
 ext.isSnapshot = version.endsWith("-SNAPSHOT")
 ext.isReleaseVersion = !ext.isSnapshot
