@@ -73,10 +73,9 @@ public class Start {
         final String jarFileName = PROJECT_NAME + "-" + version;
         final String jarFileExtension = ".jar";
 
-        if (WRAPPER_DIR.mkdirs()) {
+        if (WRAPPER_DIR.exists() || WRAPPER_DIR.mkdirs()) {
             try {
                 File downloadedJar = File.createTempFile(jarFileName, jarFileExtension);
-
                 final String wrapperUrl = getGrailsCoreArtifactoryBaseUrl() + WRAPPER_PATH + "/" + version + "/" + jarFileName + jarFileExtension;
                 HttpURLConnection conn = createHttpURLConnection(wrapperUrl);
                 success = downloadWrapperJar(downloadedJar, conn.getInputStream());
