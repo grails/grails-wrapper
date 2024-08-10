@@ -21,7 +21,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class Start {
 
-    private static final String PROJECT_NAME = "grails5-wrapper";
+    private static final String PROJECT_NAME = "grails5_3_4-wrapper";
     private static final String WRAPPER_PATH = "/org/grails/" + PROJECT_NAME;
     private static final String DEFAULT_GRAILS_CORE_ARTIFACTORY_BASE_URL = "https://repo.grails.org/grails/core";
     private static final File WRAPPER_DIR = new File(System.getProperty("user.home") + "/.grails/wrapper");
