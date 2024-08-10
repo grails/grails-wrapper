@@ -1,11 +1,11 @@
 apply plugin: 'java'
 
 jar {
-    archiveName = "grails-wrapper.jar"
+    archiveFileName = "grails-wrapper.jar"
     manifest {
         attributes 'Main-Class': 'grails.init.Start'
     }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = "1.11"
+targetCompatibility = "1.11"

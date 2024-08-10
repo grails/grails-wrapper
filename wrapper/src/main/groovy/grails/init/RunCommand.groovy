@@ -1,8 +1,9 @@
 package grails.init
 
-import org.springframework.boot.cli.compiler.grape.AetherGrapeEngine
-import org.springframework.boot.cli.compiler.grape.AetherGrapeEngineFactory
+
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext
+import org.springframework.boot.cli.compiler.grape.MavenResolverGrapeEngine
+import org.springframework.boot.cli.compiler.grape.MavenResolverGrapeEngineFactory
 import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration
 
 /**
@@ -30,7 +31,7 @@ class RunCommand {
             repositoryConfigurations.add(new RepositoryConfiguration("JFrog OSS snapshot repo", new URI("https://oss.jfrog.org/oss-snapshot-local"), true))
         }
 
-        AetherGrapeEngine grapeEngine = AetherGrapeEngineFactory.create(groovyClassLoader, repositoryConfigurations, new DependencyResolutionContext(), false)
+        MavenResolverGrapeEngine grapeEngine = MavenResolverGrapeEngineFactory.create(groovyClassLoader, repositoryConfigurations, new DependencyResolutionContext(), false)
         grapeEngine.grab([:], [group: "org.grails", module: "grails-shell", version: grailsVersion])
 
         ClassLoader previousClassLoader = Thread.currentThread().contextClassLoader

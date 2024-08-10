@@ -14,9 +14,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVerison"
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
-        classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+        classpath 'io.spring.gradle:dependency-management-plugin:1.1.6'
+        classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
         classpath "com.bmuschko:gradle-nexus-plugin:2.3.1"
     }
 }
@@ -25,7 +25,7 @@ group 'org.grails'
 version project.projectVersion
 
 ext.pomInfo = {
-    delegate.name 'Grails 5 Wrapper'
+    delegate.name 'Grails 6 Wrapper'
     delegate.description 'The Grails Wrapper Project'
     delegate.url 'https://github.com/grails/grails-wrapper'
 
@@ -74,10 +74,17 @@ ext {
 
 configurations {
     groovyDoc.extendsFrom runtimeClasspath
+
+    all {
+        resolutionStrategy.dependencySubstitution {
+            //update fields plugin used by scaffolding
+            substitute(module("org.codehaus.plexus:plexus-sec-dispatcher:2.0")).with(module("org.sonatype.plexus:plexus-sec-dispatcher:1.4"))
+        }
+    }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = "1.11"
+targetCompatibility = "1.11"
 
 repositories {
     mavenCentral()
@@ -94,6 +101,7 @@ dependencies {
     implementation "org.codehaus.groovy:groovy:$groovyVersion"
     implementation "org.springframework.boot:spring-boot-cli:$springBootVersion"
     implementation "org.codehaus.groovy:groovy-ant:$groovyVersion"
+    implementation "io.micronaut:micronaut-inject-groovy:$micronautInjectGroovyVersion"
 }
 
 jar {
@@ -105,6 +113,8 @@ jar {
     manifest {
         attributes 'Main-Class': 'grails.init.RunCommand'
     }
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 task sourcesJar(type: Jar) {
