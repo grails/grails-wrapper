@@ -6,7 +6,7 @@ cache:
   directories:
   - $HOME/.gradle
 jdk:
-- openjdk8
+- openjdk11
 script: ./travis-build.sh
 env:
   global:
