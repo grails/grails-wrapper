@@ -1,6 +1,7 @@
 # Grails Wrapper
 
-[![Build Status](https://travis-ci.org/grails/grails-wrapper.svg?branch=master)](https://travis-ci.org/grails/grails-wrapper)
+#### Build Status
+- [![Java CI](https://github.com/grails/grails-wrapper/actions/workflows/gradle.yml/badge.svg?event=push)](https://github.com/grails/grails-wrapper/actions/workflows/gradle.yml)
 
 Versions
 ---
