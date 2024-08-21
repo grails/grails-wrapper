@@ -25,7 +25,7 @@ group 'org.grails'
 version project.projectVersion
 
 ext.pomInfo = {
-    delegate.name 'Grails 6 Wrapper'
+    delegate.name 'Grails 7 Wrapper'
     delegate.description 'The Grails Wrapper Project'
     delegate.url 'https://github.com/grails/grails-wrapper'
 
@@ -78,13 +78,10 @@ configurations {
     all {
         resolutionStrategy.dependencySubstitution {
             //update fields plugin used by scaffolding
-            substitute(module("org.codehaus.plexus:plexus-sec-dispatcher:2.0")).with(module("org.sonatype.plexus:plexus-sec-dispatcher:1.4"))
+            substitute(module("org.codehaus.plexus:plexus-sec-dispatcher:2.0")).using(module("org.sonatype.plexus:plexus-sec-dispatcher:1.4"))
         }
     }
 }
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
@@ -98,10 +95,11 @@ repositories {
 }
 
 dependencies {
-    implementation "org.codehaus.groovy:groovy:$groovyVersion"
+    implementation "org.apache.groovy:groovy:$groovyVersion"
     implementation "org.springframework.boot:spring-boot-cli:$springBootVersion"
-    implementation "org.codehaus.groovy:groovy-ant:$groovyVersion"
+    implementation "org.apache.groovy:groovy-ant:$groovyVersion"
     implementation "io.micronaut:micronaut-inject-groovy:$micronautInjectGroovyVersion"
+    implementation "org.grails:grails-shell:$grailsShellVersion"
 }
 
 jar {

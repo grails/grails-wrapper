@@ -1,3 +1,3 @@
 include 'starter'
 include 'wrapper'
-project(":wrapper").name = "grails6-wrapper"
+project(":wrapper").name = "grails7-wrapper"

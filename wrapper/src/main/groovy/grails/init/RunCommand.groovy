@@ -1,10 +1,10 @@
 package grails.init
 
 
-import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext
-import org.springframework.boot.cli.compiler.grape.MavenResolverGrapeEngine
-import org.springframework.boot.cli.compiler.grape.MavenResolverGrapeEngineFactory
-import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration
+import org.grails.cli.compiler.grape.DependencyResolutionContext
+import org.grails.cli.compiler.grape.MavenResolverGrapeEngine
+import org.grails.cli.compiler.grape.MavenResolverGrapeEngineFactory
+import org.grails.cli.compiler.grape.RepositoryConfiguration
 
 /**
  * Created by jameskleeh on 10/31/16.
