@@ -102,9 +102,15 @@ public class Start {
         Authenticator.setDefault(new SystemPropertiesAuthenticator());
 
         try {
-            if (!NO_VERSION_JAR.exists()) {
+            if (!NO_VERSION_JAR.exists() || (args.length > 0 && args[0].trim().equals("update-wrapper"))) {
+                System.out.println("Updating Grails wrapper jar to version: " + getVersion() + " located in: " + NO_VERSION_JAR.getAbsolutePath());
                 updateJar(getVersion());
+                // remove "update-wrapper" command argument
+                if(args.length > 0) {
+                    args[0] = null;
+                }
             }
+
             URLClassLoader child = new URLClassLoader(new URL[]{NO_VERSION_JAR.toURI().toURL()});
             Class<?> classToLoad = Class.forName("grails.init.RunCommand", true, child);
             Method main = classToLoad.getMethod("main", String[].class);
