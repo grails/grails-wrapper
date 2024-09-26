@@ -99,6 +99,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-cli:$springBootVersion"
     implementation "org.apache.groovy:groovy-ant:$groovyVersion"
     implementation "org.grails:grails-shell:$grailsShellVersion"
+    implementation "org.apache.groovy:groovy-templates:$groovyVersion"
 }
 
 jar {
