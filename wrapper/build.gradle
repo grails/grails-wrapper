@@ -102,6 +102,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-cli:$springBootVersion"
     implementation "org.codehaus.groovy:groovy-ant:$groovyVersion"
     implementation "io.micronaut:micronaut-inject-groovy:$micronautInjectGroovyVersion"
+    implementation "org.apache.groovy:groovy-templates:$groovyVersion"
 }
 
 jar {
