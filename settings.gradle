@@ -27,4 +27,4 @@ buildCache {
 
 include 'starter'
 include 'wrapper'
-project(":wrapper").name = "grails7-wrapper"
+project(':wrapper').name = 'grails7-wrapper'
