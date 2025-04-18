@@ -1,7 +1,7 @@
 ext.pomInfo = {
     delegate.name 'Grails 7 Wrapper'
     delegate.description 'The Grails Wrapper Project'
-    delegate.url 'https://github.com/grails/grails-wrapper'
+    delegate.url 'https://github.com/apache/grails-wrapper'
 
     delegate.licenses {
         delegate.license {
