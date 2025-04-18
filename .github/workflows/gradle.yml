@@ -17,6 +17,7 @@ jobs:
     env:
       WORKSPACE: ${{ github.workspace }}
       GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
+      develocity-access-key: ${{ secrets.GRAILS_DEVELOCITY_ACCESS_KEY  }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -35,7 +36,8 @@ jobs:
       - name: Publish to repo.grails.org
         if: success() && github.event_name == 'push' && matrix.java == '17'
         env:
-          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+          MAVEN_PUBLISH_URL: ${{ secrets.GRAILS_NEXUS_PUBLISH_SNAPSHOT_URL }}
+          MAVEN_PUBLISH_USERNAME: ${{ secrets.NEXUS_USER }}
+          MAVEN_PUBLISH_PASSWORD: ${{ secrets.NEXUS_PW  }}
         run: |
           ./gradlew publish

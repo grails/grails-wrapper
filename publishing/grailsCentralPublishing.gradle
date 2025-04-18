@@ -34,12 +34,12 @@ publishing {
         if (isSnapshot) {
             maven {
                 credentials {
-                    def u = System.getenv("ARTIFACTORY_USERNAME") ?: project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : ''
-                    def p = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : ''
+                    def u = System.getenv('MAVEN_PUBLISH_USERNAME')
+                    def p = System.getenv('MAVEN_PUBLISH_PASSWORD')
                     username = u
                     password = p
                 }
-                url "https://repo.grails.org/grails/libs-snapshots-local"
+                url System.getenv('MAVEN_PUBLISH_URL') ?: 'https://repository.apache.org/content/repositories/snapshots'
             }
         }
     }
