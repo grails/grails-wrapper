@@ -41,11 +41,11 @@ class RunCommand {
 
         MavenResolverGrapeEngine grapeEngine = MavenResolverGrapeEngineFactory.create(groovyClassLoader, repositoryConfigurations, new DependencyResolutionContext(), false)
         try {
-            grapeEngine.grab([:], [group: "org.grails", module: "grails-shell", version: grailsVersion])
+            grapeEngine.grab([:], [group: "org.apache.grails", module: "grails-shell-cli", version: grailsVersion])
         }
         catch(dependencyResolutionException){
             // Try grails shell version from gradle.properties or default
-            grapeEngine.grab([:], [group: "org.grails", module: "grails-shell", version: grailsShellVersion])
+            grapeEngine.grab([:], [group: "org.apache.grails", module: "grails-shell-cli", version: grailsShellVersion])
         }
 
         ClassLoader previousClassLoader = Thread.currentThread().contextClassLoader

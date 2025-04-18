@@ -64,11 +64,11 @@ repositories {
 }
 
 dependencies {
-    implementation platform("org.grails:grails-bom:$grailsVersion")
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
     implementation "org.apache.groovy:groovy"
     implementation "org.springframework.boot:spring-boot-cli"
     implementation "org.apache.groovy:groovy-ant"
-    implementation "org.grails:grails-shell"
+    implementation "org.apache.grails:grails-shell-cli"
     implementation "org.apache.groovy:groovy-templates"
 }
 
