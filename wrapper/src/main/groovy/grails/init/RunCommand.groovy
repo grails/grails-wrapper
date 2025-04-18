@@ -11,7 +11,7 @@ import org.grails.cli.compiler.grape.RepositoryConfiguration
  */
 class RunCommand {
 
-    static final String DEFAULT_GRAILS_SHELL_VERSION = '6.1.2'
+    static final String DEFAULT_GRAILS_SHELL_VERSION = '7.0.0-SNAPSHOT'
 
     static void main(String[] args) {
 
