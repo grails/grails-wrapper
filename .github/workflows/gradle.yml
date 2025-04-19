@@ -17,24 +17,23 @@ jobs:
     env:
       WORKSPACE: ${{ github.workspace }}
       GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
-      develocity-access-key: ${{ secrets.GRAILS_DEVELOCITY_ACCESS_KEY  }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+      - name: "☕️ Setup JDK"
+        uses: actions/setup-java@v4
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
+          distribution: liberica
           java-version: ${{ matrix.java }}
-      - name: Run Assemble
-        if: success() && github.event_name == 'push' && matrix.java == '17'
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRAILS_DEVELOCITY_ACCESS_KEY  }}
+      - name: "🔨 Run Assemble"
+        if: github.event_name == 'push' && matrix.java == '17'
         run: ./gradlew assemble
-      - name: Publish to repo.grails.org
-        if: success() && github.event_name == 'push' && matrix.java == '17'
+      - name: "📤 Publish Snapshot Artifacts to Apache Snapshot Repo"
+        if: github.event_name == 'push' && matrix.java == '17'
         env:
           MAVEN_PUBLISH_URL: ${{ secrets.GRAILS_NEXUS_PUBLISH_SNAPSHOT_URL }}
           MAVEN_PUBLISH_USERNAME: ${{ secrets.NEXUS_USER }}
