@@ -40,8 +40,8 @@ if (isReleaseVersion) {
 }
 
 allprojects {
-    group 'org.apache.grails'
-    version project.projectVersion
+    group = 'org.apache.grails'
+    version = projectVersion
 
     apply plugin: "java"
 
