@@ -58,8 +58,8 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url "https://repository.apache.org/content/groups/snapshots/" }
-    maven { url "https://repo.grails.org/grails/core" }
+    maven { url = 'https://repository.apache.org/content/groups/snapshots' }
+    maven { url = 'https://repo.grails.org/grails/core' }
 }
 
 dependencies {
