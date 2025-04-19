@@ -8,7 +8,6 @@ buildscript {
     dependencies {
         classpath platform("org.apache.grails:grails-gradle-bom:$grailsVersion")
         classpath "org.apache.grails:grails-gradle-plugins"
-        classpath "io.spring.gradle:dependency-management-plugin"
         classpath "io.github.gradle-nexus:publish-plugin:$nexusPublishPluginVersion"
         classpath "com.bmuschko:gradle-nexus-plugin:$gradleNexusPluginVersion"
     }
