@@ -1,7 +1,4 @@
 buildscript {
-    ext {
-        grailsVersion = project.grailsVersion
-    }
     repositories {
         mavenCentral()
         maven { url "https://repository.apache.org/content/groups/snapshots/" }

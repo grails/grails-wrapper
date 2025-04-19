@@ -41,7 +41,6 @@ apply plugin: 'signing'
 apply plugin: "io.spring.dependency-management"
 
 ext {
-    grailsVersion = project.grailsVersion
     userOrg = 'grails'
     repo = 'grails-core'
 }
