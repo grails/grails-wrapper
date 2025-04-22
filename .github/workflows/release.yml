@@ -12,34 +12,34 @@ jobs:
       GIT_USER_NAME: 'grails-build'
       GIT_USER_EMAIL: 'grails-build@users.noreply.github.com'
     steps:
-      - name: Checkout repository
+      - name: "📥 Checkout repository"
         uses: actions/checkout@v4
-      - uses: gradle/wrapper-validation-action@v1
-      - name: Set up JDK
-        uses: actions/setup-java@v1
+      - name: "☕️ Setup JDK"
+        uses: actions/setup-java@v4
         with:
+          distribution: liberica
           java-version: ${{ matrix.java }}
-      - name: Extract Target Branch
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRAILS_DEVELOCITY_ACCESS_KEY  }}
+      - name: "🔀 Extract Target Branch"
         id: extract_branch
         run: |
           echo "Determining Target Branch"
           TARGET_BRANCH=`cat $GITHUB_EVENT_PATH | jq '.release.target_commitish' | sed -e 's/^"\(.*\)"$/\1/g'`
           echo $TARGET_BRANCH
           echo ::set-output name=value::${TARGET_BRANCH}
-      - name: Set the current release version
+      - name: "📅 Set the current release version"
         id: release_version
         run: echo ::set-output name=release_version::${GITHUB_REF:11}
-      - name: Run pre-release
-        uses: grails/github-actions/pre-release@main
+      - name: "⚙️ Run pre-release"
+        uses: apache/grails-github-actions/pre-release@asf
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish to Sonatype OSSRH
+      - name: "📤 Publish to Sonatype OSSRH"
         id: publish
-        if: success()
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
-          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_NEXUS_URL: ${{ secrets.SONATYPE_NEXUS_URL }}
@@ -52,11 +52,10 @@ jobs:
           echo "Publishing Artifacts"
           (set -x; ./gradlew -Psigning.secretKeyRingFile="${GITHUB_WORKSPACE}/secring.gpg" publishToSonatype closeAndReleaseSonatypeStagingRepository --no-daemon)
           (set -x; ./gradlew assemble --no-daemon)
-      - name: Export Gradle Properties
-        uses: grails/github-actions/export-gradle-properties@main
-      - name: Run post-release
-        if: success()
-        uses: grails/github-actions/post-release@main
+      - name: "📤 Export Gradle Properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
+      - name: "⚙️ Run post-release"
+        uses: apache/grails-github-actions/post-release@asf
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
         env:

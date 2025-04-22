@@ -1,28 +1,7 @@
-buildscript {
-    ext {
-        grailsVersion = project.grailsVersion
-    }
-    repositories {
-        mavenCentral()
-        maven { url "https://repo.grails.org/grails/core" }
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
-    dependencies {
-        classpath platform("org.grails:grails-bom:$grailsVersion")
-        classpath "org.grails:grails-gradle-plugin"
-        classpath "io.spring.gradle:dependency-management-plugin"
-        classpath "io.github.gradle-nexus:publish-plugin:$nexusPublishPluginVersion"
-        classpath "com.bmuschko:gradle-nexus-plugin:$gradleNexusPluginVersion"
-    }
-}
-
-group 'org.grails'
-version project.projectVersion
-
 ext.pomInfo = {
     delegate.name 'Grails 7 Wrapper'
     delegate.description 'The Grails Wrapper Project'
-    delegate.url 'https://github.com/grails/grails-wrapper'
+    delegate.url 'https://github.com/apache/grails-wrapper'
 
     delegate.licenses {
         delegate.license {
@@ -62,7 +41,6 @@ apply plugin: 'signing'
 apply plugin: "io.spring.dependency-management"
 
 ext {
-    grailsVersion = project.grailsVersion
     userOrg = 'grails'
     repo = 'grails-core'
 }
@@ -80,15 +58,16 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.grails.org/grails/core" }
+    maven { url = 'https://repository.apache.org/content/groups/snapshots' }
+    maven { url = 'https://repo.grails.org/grails/core' }
 }
 
 dependencies {
-    implementation platform("org.grails:grails-bom:$grailsVersion")
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
     implementation "org.apache.groovy:groovy"
     implementation "org.springframework.boot:spring-boot-cli"
     implementation "org.apache.groovy:groovy-ant"
-    implementation "org.grails:grails-shell"
+    implementation "org.apache.grails:grails-shell-cli"
     implementation "org.apache.groovy:groovy-templates"
 }
 
