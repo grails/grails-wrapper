@@ -1,8 +1,0 @@
-apply plugin: 'java'
-
-jar {
-    archiveFileName = "grails-wrapper.jar"
-    manifest {
-        attributes 'Main-Class': 'grails.init.Start'
-    }
-}
